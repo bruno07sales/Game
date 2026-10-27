@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reciclando</title>
+  <meta name="description" content="Jogo educativo sobre triagem e descarte correto de resíduos.">
+  <link rel="icon" href="imagens/icone.svg" type="image/svg+xml">
+
+  <!-- APARÊNCIA -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/jogo.css">
+</head>
+<body>
+
+  <!-- Todas as telas do jogo são criadas aqui dentro pelos arquivos de js/. -->
+  <main id="palco"></main>
+
+  <noscript>Este jogo precisa de JavaScript para funcionar.</noscript>
+
+  <!--
+    A ORDEM DOS SCRIPTS IMPORTA:
+      1. base      2. dados      3. regras      4. tela de jogo
+      5. outras telas      6. extras      7. principal (sempre o último)
+    Para tirar uma parte do jogo, apague a linha dela.
+    Para acrescentar, ponha a linha no grupo certo.
+  -->
+
+  <!-- 1. BASE: o que todos os outros arquivos usam -->
+  <script src="js/base.js"></script>
+
+  <!-- 2. DADOS: números, lixeiras, itens, fases, sons e créditos -->
+  <script src="dados/config.js"></script>
+  <script src="dados/lixeiras.js"></script>
+  <script src="dados/itens.js"></script>
+  <script src="dados/fases/fase1-casa.js"></script>
+  <!-- 3. REGRAS: o jogo sem a parte visual -->
+  <script src="js/regras/sorteio.js"></script>
+  <script src="js/regras/partida.js"></script>
+  <!-- 4. TELA DE JOGO: esteira, lixeiras, clique, placar e retorno -->
+  <script src="js/jogo/tela-jogo.js"></script>
+  <script src="js/jogo/esteira.js"></script>
+  <!-- 5. OUTRAS TELAS -->
+  <!-- 6. EXTRAS -->
+  <!-- 7. PRINCIPAL: liga tudo e abre o jogo -->
+  <script src="js/principal.js"></script>
+</body>
+</html>

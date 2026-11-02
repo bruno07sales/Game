@@ -11,6 +11,8 @@
   const elementos = new Map();
   let ultimo = performance.now();
   let itemAnunciado;
+  let ultimoDescarte = -Infinity;
+  let ultimaLixeira;
   for (const lixeira of dados.lixeiras) {
     const botao = document.createElement('button');
     botao.type = 'button'; botao.dataset.lixeira = lixeira.id;
@@ -51,10 +53,20 @@
   }
   lixeiras.addEventListener('click', evento => {
     const botao = evento.target.closest('button[data-lixeira]');
-    if (botao) { informar(partida.descartar(botao.dataset.lixeira)); desenhar(); }
+    if (!botao || document.hidden) return;
+    const id = botao.dataset.lixeira;
+    const agora = performance.now();
+    const intervalo = R.dados.config.esteira.pausaEntreCliques * 1000;
+    if (id === ultimaLixeira && agora - ultimoDescarte < intervalo) return;
+    const jogada = partida.descartar(id);
+    if (jogada) {
+      ultimoDescarte = agora; ultimaLixeira = id;
+      informar(jogada); desenhar();
+    }
   });
   document.querySelector('#reiniciar').addEventListener('click', () => {
     partida.reiniciar(); ultimo = performance.now();
+    ultimoDescarte = -Infinity; ultimaLixeira = undefined;
     retorno.textContent = 'Observe o material e o estado de cada item.';
     delete retorno.dataset.tipo; desenhar();
   });

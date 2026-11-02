@@ -42,4 +42,29 @@ avancar(1.1);
 assert.match(elementos['item-atual'].textContent, /Item da vez:/);
 avancar(12);
 assert.match(elementos.retorno.textContent, /caiu da esteira/);
-console.log('OK: scripts e caminhos, interface, clique, feedback, reinicio, pausa e retomada.');
+// Dois itens presentes: clique duplo na mesma lixeira retira apenas um.
+elementos.reiniciar.listeners.click();
+avancar(7.1);
+clicar('papel');
+const feedback = elementos.retorno.textContent;
+clicar('papel');
+assert.match(elementos.andamento.textContent, /1 \/ 15/);
+assert.equal(elementos.retorno.textContent, feedback);
+avancar(0.3);
+clicar('papel');
+assert.match(elementos.andamento.textContent, /1 \/ 15/);
+avancar(0.05);
+clicar('papel');
+assert.match(elementos.andamento.textContent, /2 \/ 15/);
+// Outra lixeira continua utilizável imediatamente, como define a configuração.
+elementos.reiniciar.listeners.click();
+avancar(7.1);
+clicar('papel');
+clicar('plastico');
+assert.match(elementos.andamento.textContent, /2 \/ 15/);
+// Reinício também limpa a proteção de clique.
+elementos.reiniciar.listeners.click();
+avancar(1.1);
+clicar('papel');
+assert.match(elementos.andamento.textContent, /1 \/ 15/);
+console.log('OK: scripts, caminhos, clique, feedback, reinicio, pausa e protecao contra clique duplo.');

@@ -20,7 +20,7 @@ Opcionalmente execute `python -m http.server 8000 --bind 127.0.0.1` e abra `http
 ## Estrutura
 
 - `js/base.js`: namespace compartilhado; carregado primeiro.
-- `dados/config.js`: configuração original; nesta etapa usa-se apenas `esteira.esperaInicial`.
+- `dados/config.js`: configuração original; nesta etapa usam-se `esteira.esperaInicial` e `esteira.pausaEntreCliques`.
 - `dados/itens.js` e `dados/lixeiras.js`: catálogos completos, incluindo dados futuros.
 - `dados/fases/fase1-casa.js`: seleção dos oito itens, quatro lixeiras, quantidade e tempos da Casa.
 - `js/regras/sorteio.js`: fila embaralhada; apresenta todos os tipos antes de repetir.

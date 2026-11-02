@@ -30,17 +30,6 @@ Opcionalmente execute `python -m http.server 8000 --bind 127.0.0.1` e abra `http
 - `css/jogo.css`, `imagens/` e `CREDITOS-DOS-ASSETS.md`: aparência, imagens e créditos preservados.
 - `testes/regras.cjs`: testes das regras e dos caminhos usados na Casa.
 
-## Comparação com o repositório
-
-Referência consultada em 02/11/2026: [bruno07sales/Game](https://github.com/bruno07sales/Game), commit `5df9c77a229d7e2a07df356d6670ed5bd2dfc38d`.
-O diretório local não tinha metadados Git e reunia dados em `dados/jogo.js`, regras em `js/regras.js` e interface em `js/jogo.js`.
-O remoto continha configuração, catálogos, fase Casa e um fluxo que referenciava módulos ausentes. Os quatro arquivos de dados foram copiados integralmente; os módulos necessários foram completados localmente. O fluxo remoto de menus/progressão foi substituído pela inicialização direta da Casa.
-
-## Limitações intencionais
-
-Não há pontuação, contaminação, cards, menus, progressão, sons, vitória/derrota por desempenho ou outras fases jogáveis. Os campos correspondentes permanecem nos dados originais, mas não são executados. A cadência é fixa: não se antecipa a entrada com esteira vazia nem se aplicam pausas extras da configuração remota. `emDobro` e campos educativos são preservados sem comportamento adicional.
-
-O remoto tem 21 itens e 12 lixeiras, mas apenas um arquivo de fase (Casa). As imagens futuras e `imagens/cenarios/casa.svg` não existem no remoto nem no protótipo local. Os caminhos foram preservados nos dados, porém não são carregados pela interface desta etapa. Todas as imagens usadas na Casa estão presentes. As regras são simplificações didáticas.
 
 ## Validação
 

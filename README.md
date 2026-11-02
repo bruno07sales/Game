@@ -1,7 +1,8 @@
 # Reciclando — fase Casa
 
 Jogo educativo em HTML, CSS e JavaScript, sem dependências. Projeto Aplicado VII — Jogos Digitais (UnDF, 2026.2).
-Equipe: Bruno Araújo Sales, Gabriel Martins da Silva e Pablo Miranda dos Santos.
+
+Equipe: Bruno Araújo Sales,  Gabriel Martins da Silva e  Pablo Miranda dos Santos.
 
 ## Executar
 

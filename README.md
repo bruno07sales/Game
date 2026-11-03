@@ -20,7 +20,7 @@ Opcionalmente execute `python -m http.server 8000 --bind 127.0.0.1` e abra `http
 
 ## Estrutura
 ```
-reciclando/
+Game/
 ├── index.html      Abre o jogo e lista, em ordem, todos os arquivos usados
 ├── dados/          O QUE o jogo tem: números, lixeiras, itens, fases, sons
 |   ├──config.js        Configuração original; nesta etapa usa-se apenas `esteira.esperaInicial`.

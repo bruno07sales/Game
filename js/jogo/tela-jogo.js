@@ -1,69 +1,138 @@
-// Interface única: esteira, lixeiras, retorno e reinício.
+/* ==========================================================================
+   RECICLANDO — js/jogo/tela-jogo.js               (GDD, seções 21 e 22.3)
+   A tela de jogo: monta o "esqueleto" da tela, faz o tempo andar e cuida
+   da pausa.
+
+   A tela é dividida em áreas. Cada área é preenchida por um arquivo:
+     placar ..... js/jogo/placar.js    (pontos, contaminação, itens)
+     esteira .... js/jogo/esteira.js   (os itens andando)
+     retorno .... js/jogo/retorno.js   (a faixa de "Correto!" e de erro)
+     lixeiras ... js/jogo/lixeiras.js  (as lixeiras) + controles.js (o clique)
+   Se um desses arquivos ainda não existir, a área fica vazia e o resto
+   continua funcionando.
+   ========================================================================== */
 (function (R) {
   'use strict';
-  R.iniciarInterface = function (dados) {
-  const partida = R.criarPartida(dados);
-  const pista = document.querySelector('#pista');
-  const retorno = document.querySelector('#retorno');
-  const atual = document.querySelector('#item-atual');
-  const andamento = document.querySelector('#andamento');
-  const lixeiras = document.querySelector('#lixeiras');
-  const elementos = new Map();
-  let ultimo = performance.now();
-  let itemAnunciado;
-  for (const lixeira of dados.lixeiras) {
-    const botao = document.createElement('button');
-    botao.type = 'button'; botao.dataset.lixeira = lixeira.id;
-    botao.style.setProperty('--cor', lixeira.cor);
-    const imagem = document.createElement('img'); imagem.src = lixeira.imagem; imagem.alt = '';
-    const nome = document.createElement('span'); nome.textContent = lixeira.nome;
-    botao.append(imagem, nome); lixeiras.append(botao);
-  }
-  function informar(jogada) {
-    if (!jogada) return;
-    const destino = dados.lixeiras.find(x => x.id === jogada.item.lixeira).nome;
-    retorno.dataset.tipo = jogada.acertou ? 'acerto' : 'erro';
-    retorno.textContent = jogada.acertou
-      ? 'Correto! ' + jogada.item.nome + ' vai em ' + destino + '.'
-      : jogada.item.nome + (jogada.caiu ? ' caiu da esteira. ' : ': descarte incorreto. ') + 'Destino correto: ' + destino + '.';
-  }
-  function desenhar() {
-    const estado = partida.estado;
-    const presentes = new Set(estado.itens.map(x => x.numero));
-    for (const [numero, elemento] of elementos) {
-      if (!presentes.has(numero)) { elemento.remove(); elementos.delete(numero); }
+
+  const tela = R.telas.criar('jogo', `
+    <header class="jogo-topo">
+      <button type="button" class="botao-redondo" data-acao="pausar" aria-label="Pausar o jogo" title="Pausar (tecla Esc)">
+        ${R.icone('pausa')}
+      </button>
+      <div class="placar" data-area="placar"></div>
+    </header>
+
+    <div class="cena" data-area="cena">
+      <div class="esteira" data-area="esteira"></div>
+    </div>
+
+    <div class="retorno" data-area="retorno" role="status" aria-live="polite"></div>
+
+    <div class="lixeiras" data-area="lixeiras"></div>
+
+    <div class="painel-fundo" data-area="pausa" hidden>
+      <div class="painel" role="dialog" aria-modal="true" aria-labelledby="titulo-pausa">
+        <h2 id="titulo-pausa">Jogo pausado</h2>
+        <p>A esteira está parada. Nada é perdido enquanto o jogo está em pausa.</p>
+        <div class="painel-botoes">
+          <button type="button" class="botao botao-principal" data-acao="continuar">Continuar</button>
+          <button type="button" class="botao" data-acao="recomecar">Recomeçar a fase</button>
+          <button type="button" class="botao" data-acao="sair">Sair da fase</button>
+        </div>
+      </div>
+    </div>
+  `, aoMostrar);
+
+  const painelDePausa = tela.querySelector('[data-area="pausa"]');
+
+  // Os outros arquivos da pasta js/jogo/ pegam a sua área por aqui.
+  R.telaJogo = {
+    elemento: tela,
+    area(nome) {
+      return tela.querySelector('[data-area="' + nome + '"]');
     }
-    estado.itens.forEach((entrada, indice) => {
-      let elemento = elementos.get(entrada.numero);
-      if (!elemento) {
-        elemento = document.createElement('div'); elemento.className = 'item';
-        const img = document.createElement('img'); img.src = entrada.item.imagem; img.alt = '';
-        const nome = document.createElement('span'); nome.textContent = entrada.item.nome;
-        elemento.append(img, nome); pista.append(elemento); elementos.set(entrada.numero, elemento);
-      }
-      elemento.classList.toggle('da-vez', indice === 0);
-      elemento.style.left = (entrada.progresso * 100) + '%';
-    });
-    const entrada = estado.itens[0];
-    const anuncio = entrada ? 'Item da vez: ' + entrada.item.nome + ' — ' + entrada.item.condicao : estado.terminou ? 'Rodada concluída. Clique em Reiniciar para jogar novamente.' : 'Aguardando o próximo item…';
-    if (anuncio !== itemAnunciado) { atual.textContent = anuncio; itemAnunciado = anuncio; }
-    andamento.textContent = 'Itens concluídos: ' + estado.passaram + ' / ' + dados.esteira.quantidade;
-  }
-  lixeiras.addEventListener('click', evento => {
-    const botao = evento.target.closest('button[data-lixeira]');
-    if (botao) { informar(partida.descartar(botao.dataset.lixeira)); desenhar(); }
-  });
-  document.querySelector('#reiniciar').addEventListener('click', () => {
-    partida.reiniciar(); ultimo = performance.now();
-    retorno.textContent = 'Observe o material e o estado de cada item.';
-    delete retorno.dataset.tipo; desenhar();
-  });
-  document.addEventListener('visibilitychange', () => { ultimo = performance.now(); });
-  function quadro(agora) {
-    const dt = Math.min((agora - ultimo) / 1000, 0.1); ultimo = agora;
-    if (!document.hidden) { partida.atualizar(dt).forEach(informar); desenhar(); }
-    requestAnimationFrame(quadro);
-  }
-  desenhar(); requestAnimationFrame(quadro);
   };
+
+  /* ------------------------------------------------------------------------
+     O TEMPO
+     O navegador chama "quadro" dezenas de vezes por segundo. A cada vez, as
+     regras avançam um pouquinho (R.partida.atualizar) e quem desenha é
+     avisado (evento 'quadro').
+     ------------------------------------------------------------------------ */
+  let pedido = null;      // o próximo quadro pedido ao navegador
+  let ultimoInstante = 0;
+
+  function quadro(agora) {
+    // dt = segundos desde o quadro anterior. O limite de 0,1 s evita um
+    // "salto" na esteira quando o navegador fica um tempo sem desenhar.
+    const dt = Math.min(Math.max(agora - ultimoInstante, 0) / 1000, 0.1);
+    ultimoInstante = agora;
+    R.partida.atualizar(dt);
+    R.eventos.emitir('quadro', dt);
+    pedido = requestAnimationFrame(quadro);
+  }
+
+  function ligarTempo() {
+    desligarTempo(); // garante que nunca há dois "relógios" ao mesmo tempo
+    ultimoInstante = performance.now();
+    pedido = requestAnimationFrame(quadro);
+  }
+
+  function desligarTempo() {
+    if (pedido !== null) cancelAnimationFrame(pedido);
+    pedido = null;
+  }
+
+  // Chamada quando a tela de jogo aparece: começa a fase pedida.
+  function aoMostrar(dados) {
+    painelDePausa.hidden = true;
+    R.partida.iniciar(dados.fase, dados.indice);
+    ligarTempo();
+  }
+
+  // Saiu da tela de jogo: o tempo para.
+  R.eventos.ouvir('tela-mudou', (dados) => {
+    if (dados.tela !== 'jogo') desligarTempo();
+  });
+
+  /* ------------------------------------------------------------------------
+     A PAUSA
+     ------------------------------------------------------------------------ */
+  function pausar() {
+    const estado = R.partida.estado;
+    if (R.telas.atual !== 'jogo' || estado.terminou || estado.pausada) return;
+    R.partida.pausar();
+    painelDePausa.hidden = false;
+    painelDePausa.querySelector('[data-acao="continuar"]').focus();
+  }
+
+  function continuar() {
+    painelDePausa.hidden = true;
+    R.partida.retomar();
+  }
+
+  R.dom.acoes(tela, {
+    pausar: pausar,
+    continuar: continuar,
+    recomecar() {
+      const estado = R.partida.estado;
+      R.fluxo.jogar(estado.indiceDaFase);
+    },
+    sair() {
+      painelDePausa.hidden = true;
+      R.fluxo.sairDaFase();
+    }
+  });
+
+  // Tecla Esc: pausa e continua.
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Escape' || R.telas.atual !== 'jogo') return;
+    if (R.partida.estado.pausada) continuar();
+    else pausar();
+  });
+
+  // Trocou de aba ou minimizou a janela: pausa sozinho.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pausar();
+  });
 })(window.Reciclando);

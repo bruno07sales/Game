@@ -1,0 +1,393 @@
+/* ==========================================================================
+   RECICLANDO — css/base.css
+   A aparência que vale para o jogo inteiro: fontes, cores, botões, painéis
+   e a estrutura das telas.
+
+   O estilo é de "papel recortado": cores chapadas, contorno escuro grosso
+   e sombra dura (sem borrão), combinando com os desenhos dos itens.
+   ========================================================================== */
+
+/* ---- Fontes (arquivos na pasta fontes/, com as licenças) ---- */
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('../fontes/londrina-solid-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('../fontes/londrina-solid-900.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lexend';
+  src: url('../fontes/lexend-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lexend';
+  src: url('../fontes/lexend-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---- Cores e medidas usadas em todo o jogo ---- */
+:root {
+  --tinta: #1B2A38;          /* contornos e texto */
+  --tinta-clara: #4C5D6C;    /* texto secundário */
+  --papel: #FFFFFF;
+  --ceu: #CDE8EC;            /* fundo das telas de menu */
+  --chao: #B4D8D4;
+  --amarelo: #FFC93C;        /* destaque: botão principal, item da vez */
+  --certo: #16824A;
+  --certo-claro: #DCF5E6;
+  --errado: #C8263A;
+  --errado-claro: #FDE2E4;
+  --foco: #0B57D0;           /* contorno de quem navega pelo teclado */
+
+  --borda: 3px;
+  --raio: 20px;
+  --sombra: 0 6px 0 var(--tinta);
+
+  /* Londrina Solid: títulos, botões e números. Lexend: textos. */
+  --fonte-titulo: 'Londrina Solid', 'Arial Black', 'Trebuchet MS', sans-serif;
+  --fonte-texto: 'Lexend', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--fonte-texto);
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--tinta);
+  background: var(--ceu);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  max-width: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+button {
+  touch-action: manipulation; /* no celular, toque duplo não dá zoom */
+  user-select: none;
+}
+
+h1,
+h2 {
+  font-family: var(--fonte-titulo);
+  line-height: 1.02;
+  margin: 0;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: clamp(2rem, 5.5vw, 3.2rem);
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+h1:focus,
+h2:focus {
+  outline: none;
+}
+
+p {
+  margin: 0;
+}
+
+code {
+  font-size: 0.95em;
+  background: rgba(27, 42, 56, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 6px;
+}
+
+/* ---- Telas: só uma aparece por vez ---- */
+#palco {
+  height: 100%;
+}
+
+.tela {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* céu em cima, chão embaixo: duas cores chapadas */
+  background: linear-gradient(to bottom, var(--ceu) 0, var(--ceu) 70%, var(--chao) 70%, var(--chao) 100%);
+}
+
+.tela[hidden] {
+  display: none;
+}
+
+/* ---- Ícones desenhados em base.js ---- */
+.icone {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+  vertical-align: -0.24em;
+}
+
+/* ---- Botões ---- */
+.botao {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--tinta);
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 14px;
+  padding: 0.5em 1.1em 0.55em;
+  min-height: 48px;
+  box-shadow: 0 4px 0 var(--tinta);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.botao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--tinta);
+}
+
+.botao:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--tinta);
+}
+
+.botao-principal {
+  background: var(--amarelo);
+}
+
+.botao-grande {
+  font-size: 1.65rem;
+  padding: 0.45em 1.4em 0.5em;
+  min-height: 58px;
+}
+
+.botao-pequeno {
+  font-size: 1.1rem;
+  min-height: 42px;
+  padding: 0.3em 0.9em 0.35em;
+}
+
+.botao[hidden] {
+  display: none;
+}
+
+.botao-redondo {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.25rem;
+  color: var(--tinta);
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 50%;
+  box-shadow: 0 3px 0 var(--tinta);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.botao-redondo:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--tinta);
+}
+
+.botao-redondo .icone {
+  vertical-align: 0;
+}
+
+/* Botão de som: fixo no canto de cima, em todas as telas */
+.botao-som {
+  position: fixed;
+  /* env(...) é a área do relógio e do entalhe em celulares; no computador vale zero */
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  right: 10px;
+  z-index: 40;
+}
+
+button:focus-visible {
+  outline: 4px solid var(--foco);
+  outline-offset: 3px;
+}
+
+/* Títulos que recebem o foco quando a tela troca não mostram contorno */
+[data-foco]:focus {
+  outline: none;
+}
+
+/* ---- Painel sobre a tela (pausa) ---- */
+.painel-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(27, 42, 56, 0.62);
+}
+
+.painel-fundo[hidden] {
+  display: none;
+}
+
+.painel {
+  width: 100%;
+  max-width: 400px;
+  padding: 26px 26px 28px;
+  text-align: center;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.painel h2 {
+  font-weight: 900;
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.painel-botoes {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ---- Páginas de texto (como jogar, créditos, escolha da fase) ---- */
+.pagina {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 22px 20px 56px;
+}
+
+.pagina-estreita {
+  max-width: 720px;
+}
+
+.pagina-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-bottom: 20px;
+  padding-right: 56px; /* espaço do botão de som */
+}
+
+.pagina h2 {
+  margin: 28px 0 10px;
+}
+
+.aviso {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: var(--tinta-clara);
+}
+
+.aviso[hidden] {
+  display: none;
+}
+
+/* ---- Tabelas ---- */
+.tabela-rolagem {
+  overflow-x: auto;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--tinta);
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.tabela th,
+.tabela td {
+  padding: 9px 14px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 2px solid #D8E1E7;
+}
+
+.tabela tbody tr:last-child th,
+.tabela tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabela thead th {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.15rem;
+  background: #EEF3F6;
+  border-bottom: var(--borda) solid var(--tinta);
+}
+
+/* ---- Marcador provisório: aparece no lugar de uma imagem que faltou ---- */
+.sem-imagem {
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  font-family: var(--fonte-titulo);
+  font-size: 0.95rem;
+  line-height: 1.05;
+  text-align: center;
+  color: var(--tinta);
+  background: var(--papel);
+  border: 3px dashed var(--tinta);
+  border-radius: 12px;
+}
+
+/* ---- Texto só para leitores de tela ---- */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Quem pediu menos animação no sistema recebe menos animação ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

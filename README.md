@@ -38,4 +38,6 @@ Os novos m?dulos de telas, placar, pontua??o e contamina??o e os estilos `base.c
 
 ## Verifica??o
 
-Execute `node testes/regras.cjs` e `node testes/interface.cjs`.
+Execute `node testes/regras.cjs` e `node testes/interface.cjs`
+
+

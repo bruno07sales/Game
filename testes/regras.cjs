@@ -18,6 +18,15 @@ assert.equal(dados.esteira.intervalo, 6);
 assert.equal(dados.esteira.travessia, 12);
 assert.equal(dados.lixeiras.length,4);
 assert.equal(dados.itens.length,8);
+for (const [campo, valor] of [
+  ['travessia', 0], ['travessia', -1], ['travessia', Infinity],
+  ['intervalo', 0], ['intervalo', -1], ['intervalo', NaN],
+  ['esperaInicial', -1], ['esperaInicial', Infinity]
+]) {
+  assert.throws(() => R.criarPartida({
+    ...dados, esteira: {...dados.esteira, [campo]: valor}
+  }), /Tempos da esteira inválidos/);
+}
 for (const item of dados.itens) {
   assert.ok(dados.lixeiras.some(x=>x.id===item.lixeira));
   assert.ok(fs.existsSync(item.imagem));

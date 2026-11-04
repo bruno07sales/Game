@@ -2,6 +2,12 @@
 (function (R) {
   'use strict';
   R.criarPartida = function (dados, aleatorio = Math.random) {
+    const tempos = dados.esteira;
+    if (!Number.isFinite(tempos.travessia) || tempos.travessia <= 0 ||
+        !Number.isFinite(tempos.intervalo) || tempos.intervalo <= 0 ||
+        !Number.isFinite(tempos.esperaInicial) || tempos.esperaInicial < 0) {
+      throw new Error('Tempos da esteira inválidos.');
+    }
     let fila, proximo, espera, numero;
     const estado = { itens: [], passaram: 0, terminou: false };
     function reiniciar() {

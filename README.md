@@ -19,7 +19,6 @@ Opcionalmente execute `python -m http.server 8000 --bind 127.0.0.1` e abra `http
 - Após os 15 itens, a rodada termina e aguarda reinício.
 
 ## Estrutura
-
 - `js/base.js`: namespace compartilhado; carregado primeiro.
 - `dados/config.js`: configuração original; nesta etapa usam-se `esteira.esperaInicial` e `esteira.pausaEntreCliques`.
 - `dados/itens.js` e `dados/lixeiras.js`: catálogos completos, incluindo dados futuros.
@@ -28,9 +27,15 @@ Opcionalmente execute `python -m http.server 8000 --bind 127.0.0.1` e abra `http
 - `js/regras/partida.js`: entrada, movimento, descarte, queda e reinício, sem HTML.
 - `js/jogo/tela-jogo.js`: esteira, controles, feedback e pausa por visibilidade.
 - `js/principal.js`: seleciona Casa e conecta seus dados à interface; carregado por último.
-- `css/jogo.css`, `imagens/` e `CREDITOS-DOS-ASSETS.md`: aparência, imagens e créditos preservados.
+- `css/prototipo.css`, `imagens/` e `CREDITOS-DOS-ASSETS.md`: aparência, imagens e créditos preservados.
 - `testes/regras.cjs`: testes das regras e dos caminhos usados na Casa.
 
 
 
+## M?dulos em desenvolvimento
 
+Os novos m?dulos de telas, placar, pontua??o e contamina??o e os estilos `base.css`, `jogo.css` e `telas.css` est?o preservados, mas ainda n?o fazem parte do prot?tipo carregado por `index.html`. Eles dependem de APIs de eventos, telas e partida que ainda n?o est?o implementadas na base atual.
+
+## Verifica??o
+
+Execute `node testes/regras.cjs` e `node testes/interface.cjs`.

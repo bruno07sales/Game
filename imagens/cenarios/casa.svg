@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 400" width="1600" height="400">
+<rect width="1600" height="400" fill="#FFEFC9"/>
+<rect y="252" width="1600" height="148" fill="#FBE5B4"/>
+<path d="M32 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M96 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M160 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M224 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M288 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M352 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M416 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M480 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M544 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M608 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M672 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M736 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M800 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M864 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M928 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M992 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1056 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1120 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1184 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1248 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1312 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1376 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1440 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1504 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M1568 252V400" stroke="#F3D99C" stroke-width="3"/><path d="M0 316H1600" stroke="#F3D99C" stroke-width="3"/><path d="M0 380H1600" stroke="#F3D99C" stroke-width="3"/>
+<rect y="242" width="1600" height="12" fill="#F0D08C"/>
+<!-- janela -->
+<rect x="170" y="36" width="300" height="180" rx="10" fill="#F0D08C"/>
+<rect x="186" y="52" width="268" height="148" fill="#E3F3F4"/>
+<circle cx="392" cy="92" r="20" fill="#FFF7D6"/>
+<path d="M320 52v148M186 126h268" stroke="#F0D08C" stroke-width="12"/>
+<path d="M186 52h76c0 54-28 98-76 116z" fill="#F9CFA6"/>
+<path d="M454 52h-76c0 54 28 98 76 116z" fill="#F9CFA6"/>
+<!-- relógio -->
+<circle cx="760" cy="112" r="46" fill="#F6DFA6"/>
+<circle cx="760" cy="112" r="34" fill="#FFF6DC"/>
+<path d="M760 90v24l16 10" stroke="#EBC982" stroke-width="7" fill="none" stroke-linecap="round"/>
+<!-- prateleira -->
+<rect x="1010" y="160" width="420" height="16" rx="6" fill="#EBC982"/>
+<path d="M1050 176v30M1390 176v30" stroke="#EBC982" stroke-width="10"/>
+<path d="M1050 160v-60h56v60z" fill="#F9CFA6"/>
+<rect x="1042" y="88" width="72" height="16" rx="6" fill="#F3BE8E"/>
+<path d="M1150 160l10-46h60l10 46z" fill="#F6DFA6"/>
+<path d="M1190 114c-26-34 0-58 0-58s26 24 0 58z" fill="#CFE3A8"/>
+<path d="M1190 114c-40-10-46-40-46-40s34 0 46 40zM1190 114c40-10 46-40 46-40s-34 0-46 40z" fill="#DCEBB8"/>
+<rect x="1276" y="84" width="50" height="76" rx="8" fill="#F3BE8E"/>
+<rect x="1344" y="106" width="58" height="54" rx="8" fill="#F6DFA6"/>
+</svg>

@@ -1,0 +1,721 @@
+/* ==========================================================================
+   RECICLANDO — css/telas.css
+   As telas fora da esteira, na ordem em que aparecem no jogo:
+
+     1. Tela inicial        4. Abertura da fase
+     2. Como jogar          5. Resultado e derrota
+     3. Créditos            6. Tela final
+        e escolha da fase
+   ========================================================================== */
+
+/* ==========================================================================
+   1. TELA INICIAL
+   ========================================================================== */
+.tela-inicial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 14px;
+  text-align: center;
+}
+
+.inicial-centro {
+  width: 100%;
+  max-width: 880px;
+  margin: auto;
+}
+
+/* O logo: letras recortadas com sombra dura amarela */
+.logo {
+  font-size: clamp(3.6rem, 15vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  color: var(--tinta);
+  text-shadow: 0.045em 0.055em 0 var(--amarelo);
+}
+
+.inicial-resumo {
+  max-width: 28em;
+  margin: 16px auto 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+}
+
+/* A faixa com itens andando (enfeite) */
+.vitrine {
+  --vitrine-item: clamp(56px, 11vh, 92px);
+  position: relative;
+  height: calc(var(--vitrine-item) + 46px);
+  margin: clamp(14px, 3vh, 30px) auto clamp(18px, 3.5vh, 34px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+
+.vitrine-lona {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 46px;
+  background-color: #2B3745;
+  background-image:
+    repeating-linear-gradient(-45deg, var(--amarelo) 0, var(--amarelo) 9px, var(--tinta) 9px, var(--tinta) 18px),
+    repeating-linear-gradient(-45deg, var(--amarelo) 0, var(--amarelo) 9px, var(--tinta) 9px, var(--tinta) 18px);
+  background-size: 100% 6px, 100% 6px;
+  background-position: 0 0, 0 100%;
+  background-repeat: no-repeat;
+  border-top: var(--borda) solid var(--tinta);
+  border-bottom: var(--borda) solid var(--tinta);
+}
+
+.vitrine-itens {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: 34px;
+  display: flex;
+  width: max-content;
+  animation: desfilar 36s linear infinite;
+}
+
+.vitrine-grupo {
+  display: flex;
+  gap: clamp(28px, 5vw, 56px);
+  padding-right: clamp(28px, 5vw, 56px);
+}
+
+.vitrine-item {
+  display: block;
+  width: var(--vitrine-item);
+  height: var(--vitrine-item);
+  object-fit: contain;
+}
+
+.vitrine-item.sem-imagem {
+  font-size: 0;
+}
+
+/* Os dois grupos são iguais: andar metade da largura recomeça sem "pulo" */
+@keyframes desfilar {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.inicial-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.inicial-rodape {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: var(--tinta-clara);
+}
+
+/* ==========================================================================
+   2. COMO JOGAR
+   ========================================================================== */
+/* As telas de texto têm fundo de uma cor só, para o texto não cruzar a linha do chão */
+.tela-como-jogar,
+.tela-creditos,
+.tela-fases,
+.tela-problemas {
+  background: var(--ceu);
+}
+
+.passos {
+  counter-reset: passo;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passos li {
+  counter-increment: passo;
+  position: relative;
+  padding: 44px 16px 16px;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--tinta);
+}
+
+/* O número de cada passo (são passos em sequência) */
+.passos li::before {
+  content: counter(passo);
+  position: absolute;
+  top: -12px;
+  left: 14px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 1.6rem;
+  background: var(--amarelo);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 50%;
+}
+
+.passos strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+.regra-pontos {
+  margin-top: 18px;
+  font-size: 1.1rem;
+}
+
+.tabela th[scope="row"] {
+  padding-right: 22px;
+  white-space: nowrap;
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.tabela th[scope="row"] span {
+  vertical-align: middle;
+}
+
+.tabela-figura {
+  width: 46px;
+  height: 46px;
+  margin-right: 8px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.tabela-figura.sem-imagem {
+  display: none;
+}
+
+/* ==========================================================================
+   3. CRÉDITOS E ESCOLHA DA FASE
+   ========================================================================== */
+.creditos-painel {
+  padding: 22px 26px 26px;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+.creditos-painel h2:first-of-type {
+  margin-top: 18px;
+}
+
+.creditos-descricao {
+  font-size: 1.2rem;
+}
+
+.creditos-lista {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.creditos-lista li {
+  margin: 3px 0;
+}
+
+.tela-fases {
+  display: flex;
+}
+
+.tela-fases .pagina {
+  width: 100%;
+  margin: auto; /* no meio da tela quando sobra espaço */
+}
+
+.fases-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fases-lista li {
+  display: flex;
+}
+
+.fase-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 218px;
+  padding: 16px 16px 14px;
+  font: inherit;
+  text-align: left;
+  color: var(--tinta);
+  background: var(--cor-da-cena, var(--papel));
+  border: var(--borda) solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.fase-cartao:hover:enabled {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 var(--tinta);
+}
+
+.fase-cartao:active:enabled {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 var(--tinta);
+}
+
+.fase-numero {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 8px;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  font-size: 2.1rem;
+  line-height: 1;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 50%;
+}
+
+.fase-nome {
+  font-family: var(--fonte-titulo);
+  font-size: 1.65rem;
+  line-height: 1.05;
+}
+
+.fase-ambiente {
+  font-size: 0.98rem;
+}
+
+.fase-dados {
+  font-size: 0.95rem;
+  color: var(--tinta-clara);
+}
+
+.fase-situacao {
+  margin-top: auto;
+  padding: 3px 10px 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: var(--papel);
+  border: 2px solid var(--tinta);
+  border-radius: 999px;
+}
+
+.fase-situacao .icone {
+  margin-right: 4px;
+  color: var(--certo);
+}
+
+/* Fase bloqueada: sem cor, com cadeado, e não aceita clique */
+.fase-cartao:disabled {
+  color: var(--tinta-clara);
+  background: #DCE3E8;
+  border-color: #6F7F8C;
+  box-shadow: 0 6px 0 #6F7F8C;
+  cursor: not-allowed;
+}
+
+.fase-cartao:disabled .fase-numero,
+.fase-cartao:disabled .fase-situacao {
+  font-size: 0.95rem;
+  background: #EEF2F5;
+  border-color: #6F7F8C;
+}
+
+.fase-cartao:disabled .fase-numero .icone {
+  width: 26px;
+  height: 26px;
+}
+
+.fases-total {
+  margin-top: 22px;
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+}
+
+.fases-total[hidden] {
+  display: none;
+}
+
+.problemas-lista {
+  margin: 16px 0 0;
+  padding: 16px 16px 16px 36px;
+  background: var(--papel);
+  border: var(--borda) solid var(--errado);
+  border-radius: 14px;
+}
+
+.problemas-lista li {
+  margin: 6px 0;
+}
+
+/* ==========================================================================
+   4. ABERTURA DA FASE      5. RESULTADO      6. TELA FINAL
+   As três usam o mesmo painel branco no meio da tela.
+   ========================================================================== */
+.tela-abertura,
+.tela-resultado,
+.tela-final {
+  display: flex;
+  padding: clamp(8px, 2vh, 20px) 16px clamp(14px, 3.4vh, 28px);
+}
+
+.abertura-painel,
+.resultado-painel,
+.final-painel {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding: clamp(18px, 3.4vh, 30px) clamp(16px, 4vw, 34px) clamp(20px, 3.6vh, 32px);
+  text-align: center;
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 24px;
+  box-shadow: 0 8px 0 var(--tinta);
+}
+
+.final-painel {
+  max-width: 860px;
+}
+
+/* ---- Abertura ---- */
+.abertura-painel {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* O alto do painel tem a cor do cenário da fase */
+.abertura-topo {
+  padding: clamp(12px, 2.4vh, 20px) 20px clamp(10px, 2vh, 16px);
+  background: var(--cor-da-cena, #EEF3F6);
+  border-bottom: var(--borda) solid var(--tinta);
+}
+
+.abertura-corpo {
+  padding: clamp(12px, 2.4vh, 20px) clamp(16px, 4vw, 34px) clamp(16px, 3vh, 26px);
+}
+
+.abertura-numero {
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+}
+
+.abertura-painel h1 {
+  font-size: clamp(1.8rem, min(5.6vw, 7.4vh), 3.2rem);
+}
+
+.abertura-ambiente {
+  font-size: 1.05rem;
+}
+
+.abertura-resumo {
+  max-width: 34em;
+  margin: 0 auto;
+  font-size: 1.12rem;
+}
+
+.abertura-novidade {
+  max-width: 36em;
+  margin: 10px auto 0;
+  padding: 8px 14px;
+  text-align: left;
+  background: #FFF4CC;
+  border: 2.5px solid var(--tinta);
+  border-radius: 12px;
+}
+
+.abertura-painel h2 {
+  margin: clamp(10px, 2vh, 18px) 0 6px;
+  font-size: 1.35rem;
+}
+
+.abertura-lixeiras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  max-width: 640px; /* com 12 lixeiras, ficam 6 por linha */
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.abertura-lixeira {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 92px;
+  font-family: var(--fonte-titulo);
+  font-size: 1rem;
+  line-height: 1.05;
+}
+
+.abertura-figura {
+  width: clamp(48px, 9vh, 72px);
+  height: clamp(48px, 9vh, 72px);
+  object-fit: contain;
+}
+
+.abertura-figura.sem-imagem {
+  display: none;
+}
+
+/* Com muitas lixeiras (fase 4), os desenhos diminuem */
+.abertura-lixeiras[data-quantidade="7"] .abertura-lixeira,
+.abertura-lixeiras[data-quantidade="8"] .abertura-lixeira,
+.abertura-lixeiras[data-quantidade="9"] .abertura-lixeira,
+.abertura-lixeiras[data-quantidade="10"] .abertura-lixeira,
+.abertura-lixeiras[data-quantidade="11"] .abertura-lixeira,
+.abertura-lixeiras[data-quantidade="12"] .abertura-lixeira {
+  width: 86px;
+  font-size: 0.92rem;
+}
+
+.abertura-lixeiras[data-quantidade="7"] .abertura-figura,
+.abertura-lixeiras[data-quantidade="8"] .abertura-figura,
+.abertura-lixeiras[data-quantidade="9"] .abertura-figura,
+.abertura-lixeiras[data-quantidade="10"] .abertura-figura,
+.abertura-lixeiras[data-quantidade="11"] .abertura-figura,
+.abertura-lixeiras[data-quantidade="12"] .abertura-figura {
+  width: clamp(40px, 6.6vh, 54px);
+  height: clamp(40px, 6.6vh, 54px);
+}
+
+.abertura-numeros {
+  margin-top: clamp(8px, 1.8vh, 16px);
+}
+
+.abertura-botoes,
+.resultado-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 14px;
+  margin-top: clamp(16px, 3vh, 26px);
+}
+
+/* ---- Resultado ---- */
+/* A faixa colorida no alto do painel: verde na vitória, vermelha na derrota */
+.resultado-vitoria,
+.resultado-derrota,
+.final-painel {
+  padding-top: calc(clamp(18px, 3.4vh, 30px) + 16px);
+}
+
+.resultado-vitoria { box-shadow: inset 0 16px 0 var(--certo), 0 8px 0 var(--tinta); }
+.resultado-derrota { box-shadow: inset 0 16px 0 var(--errado), 0 8px 0 var(--tinta); }
+
+.resultado-fase {
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+}
+
+.resultado-painel h1,
+.final-painel h1 {
+  font-size: clamp(2rem, min(6.4vw, 8vh), 3.6rem);
+}
+
+.final-subtitulo {
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  line-height: 1.1;
+}
+
+.resultado-texto {
+  max-width: 36em;
+  margin: 8px auto 0;
+}
+
+.resultado-painel h2 {
+  margin: clamp(10px, 2vh, 20px) 0 6px;
+  font-size: 1.4rem;
+}
+
+/* Os números grandes (pontos, acertos, erros, contaminação) */
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: clamp(12px, 2.4vh, 24px) 0 0;
+}
+
+.numeros > div {
+  padding: clamp(6px, 1.2vh, 10px) 6px clamp(8px, 1.4vh, 12px);
+  background: #EEF3F6;
+  border: 2.5px solid var(--tinta);
+  border-radius: 14px;
+}
+
+.numeros dt {
+  font-size: 0.92rem;
+  color: var(--tinta-clara);
+}
+
+.numeros dd {
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.5rem, 4.4vw, 2.3rem);
+  line-height: 1.1;
+}
+
+.numeros dd.numeros-nota {
+  font-family: var(--fonte-texto);
+  font-size: 0.85rem;
+  line-height: 1.2;
+  color: var(--tinta-clara);
+}
+
+.resultado-total {
+  margin-top: 16px;
+  font-size: 1.15rem;
+}
+
+/* ---- Derrota: a lista do que deu errado ---- */
+.erros-lista {
+  display: grid;
+  gap: 4px;
+  max-width: 38em;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.erros-lista li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 10px;
+  font-size: 0.97em;
+  line-height: 1.3;
+  background: var(--errado-claro);
+  border-radius: 12px;
+}
+
+.erros-figura {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.erros-figura.sem-imagem {
+  display: none;
+}
+
+.erros-detalhe {
+  color: var(--tinta-clara);
+}
+
+/* ---- Tela final ---- */
+.final-painel {
+  box-shadow: inset 0 16px 0 var(--amarelo), 0 8px 0 var(--tinta);
+}
+
+.final-painel .tabela-rolagem {
+  margin-top: clamp(10px, 2vh, 18px);
+  box-shadow: none;
+}
+
+.tabela-final th,
+.tabela-final td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.tabela-final td,
+.tabela-final thead th {
+  text-align: center;
+}
+
+.tabela-final th[scope="row"] {
+  font-size: 1.1rem;
+  white-space: normal;
+}
+
+.final-mensagem {
+  max-width: 40em;
+  margin: clamp(10px, 2vh, 18px) auto 0;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 620px) {
+  .numeros {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Janela baixa: os painéis ficam mais compactos para caber sem rolagem */
+@media (max-height: 620px) {
+  .abertura-painel,
+  .resultado-painel,
+  .final-painel {
+    font-size: 16px;
+  }
+
+  .abertura-lixeiras {
+    gap: 2px 14px;
+  }
+
+  .tabela-final th,
+  .tabela-final td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .botao-grande {
+    font-size: 1.45rem;
+    min-height: 50px;
+  }
+
+  .abertura-topo {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .abertura-corpo {
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+
+  .abertura-novidade {
+    margin-top: 6px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .abertura-painel h2 {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 1.2rem;
+  }
+
+  .abertura-lixeira {
+    font-size: 0.85rem;
+  }
+
+  .abertura-botoes,
+  .resultado-botoes {
+    margin-top: 10px;
+  }
+}

@@ -1,30 +1,770 @@
-* { box-sizing: border-box; }
-body { margin: 0; background: #f2f6ed; color: #24342b; font-family: Arial, sans-serif; }
-main { max-width: 980px; margin: auto; padding: 24px; }
-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-h1 { margin: 0; }
-p { line-height: 1.5; }
-button { font: inherit; cursor: pointer; border: 2px solid #708578; border-radius: 10px; padding: 12px 18px; background: white; color: inherit; }
-button:focus-visible { outline: 3px solid #142b91; outline-offset: 4px; }
-.sentido { text-align: right; font-size: 14px; }
-#esteira { border: 8px solid #526359; border-radius: 18px; background: repeating-linear-gradient(90deg, #d3dcd4 0 38px, #b8c6ba 38px 42px); padding: 16px 8px; overflow: hidden; }
-#pista { position: relative; height: 150px; margin-right: 128px; }
-.item { position: absolute; top: 12px; width: 128px; text-align: center; font-size: 14px; }
-.item img { display: block; width: 80px; height: 80px; object-fit: contain; margin: auto; }
-.item span { display: block; padding: 5px; border-radius: 6px; background: white; }
-.item.da-vez span { background: #fff0a5; outline: 2px solid #715807; font-weight: bold; }
-#item-atual { min-height: 3em; font-weight: bold; }
-#retorno { min-height: 4em; background: white; border-left: 5px solid #708578; padding: 12px; border-radius: 6px; }
-#retorno[data-tipo="acerto"] { border-color: #287438; }
-#retorno[data-tipo="erro"] { border-color: #b02e24; }
-#lixeiras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-#lixeiras button { border-bottom: 6px solid var(--cor); }
-#lixeiras img { display: block; width: 100%; height: 110px; object-fit: contain; margin-bottom: 8px; }
-#lixeiras span { font-weight: bold; }
-#andamento { text-align: center; }
-@media (max-width: 540px) {
-  main { padding: 16px; }
-  #lixeiras { grid-template-columns: repeat(2, 1fr); }
-  #lixeiras img { height: 80px; }
-  #lixeiras button { padding: 8px; }
+/* ==========================================================================
+   RECICLANDO — css/jogo.css
+   A tela de jogo, de cima para baixo:
+
+     .jogo-topo ... pausa + placar (pontos, contaminação, itens)
+     .cena ........ o cenário da fase, com a esteira e os itens
+     .retorno ..... a faixa de "Correto!" e de erro
+     .lixeiras .... as lixeiras (1 ou 2 linhas)
+
+   As medidas usam "clamp(mínimo, ideal, máximo)" para a tela caber em
+   monitores de tamanhos diferentes sem barra de rolagem.
+   ========================================================================== */
+
+.tela-jogo {
+  /* Medidas da esteira, dos itens e das lixeiras */
+  --lona: clamp(44px, 8.5vh, 62px);            /* altura da faixa da esteira */
+  --rolos: clamp(12px, 2.4vh, 20px);           /* altura dos rolos embaixo dela */
+  --tamanho-item: clamp(60px, 18vh, 150px);    /* desenho do item */
+  --largura-item: clamp(118px, 15vw, 230px);   /* espaço da etiqueta com o nome */
+  --altura-lixeira: clamp(58px, 19vh, 150px);
+  --altura-retorno: clamp(58px, 10vh, 76px);
+  --boca: clamp(40px, 6vw, 84px);              /* de onde os itens saem */
+  --fim: clamp(30px, 5vw, 70px);               /* espaço depois do fim da esteira */
+  --vao: clamp(6px, 1.2vw, 16px);              /* espaço entre as lixeiras */
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #D2DCE3;
+  user-select: none; /* cliques rápidos não selecionam texto */
+}
+
+/* ==========================================================================
+   PLACAR
+   ========================================================================== */
+.jogo-topo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 66px;
+  padding: 8px 16px;
+  color: #FFFFFF;
+  background: var(--tinta);
+}
+
+.com-botao-de-som .jogo-topo {
+  padding-right: 70px; /* espaço do botão de som */
+}
+
+.jogo-topo .botao-redondo {
+  box-shadow: none;
+}
+
+.placar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(10px, 2.6vw, 36px);
+}
+
+.placar-bloco {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.placar-rotulo {
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: #B7C6D2;
+  white-space: nowrap;
+}
+
+.placar-valor {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.6vw, 1.8rem);
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.placar-fase .placar-valor {
+  max-width: 24ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.placar-pontos .placar-valor {
+  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+  color: var(--amarelo);
+}
+
+.placar-itens {
+  text-align: right;
+}
+
+/* "Pulinho" quando um número muda (a classe é posta por placar.js) */
+.mudou {
+  display: inline-block;
+  animation: pulinho 0.25s ease-out;
+}
+
+@keyframes pulinho {
+  0% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ---- Medidor de contaminação ---- */
+.medidor {
+  flex: 1 1 240px;
+  max-width: 440px;
+}
+
+.medidor-topo {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.medidor-nivel {
+  font-size: 0.8rem;
+  line-height: 1.25;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+.medidor-linha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.medidor-barra {
+  flex: 1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  height: 24px;
+  padding: 3px;
+  background: #0D1720;
+  border: 2px solid #6C7C8A;
+  border-radius: 9px;
+}
+
+.medidor-parte {
+  border-radius: 4px;
+  background: #2A3947;
+}
+
+/* Parte contaminada: cor e listras (não depende só da cor) */
+.medidor-parte.cheia {
+  background: repeating-linear-gradient(135deg, #FF7352 0, #FF7352 6px, #D9421F 6px, #D9421F 12px);
+  animation: encher 0.3s ease-out;
+}
+
+@keyframes encher {
+  0% { transform: scaleY(0.2); }
+  60% { transform: scaleY(1.25); }
+  100% { transform: scaleY(1); }
+}
+
+.medidor .placar-valor {
+  min-width: 3.2ch;
+  text-align: right;
+}
+
+/* Falta um erro para perder o lote: o medidor avisa */
+.medidor[data-restam="1"] .medidor-nivel {
+  font-weight: 700;
+  color: #FFB4A2;
+}
+
+.medidor[data-restam="1"] .medidor-barra {
+  animation: alerta 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes alerta {
+  0% { border-color: #6C7C8A; }
+  100% { border-color: #FF7352; box-shadow: 0 0 0 3px rgba(255, 115, 82, 0.4); }
+}
+
+/* ==========================================================================
+   CENA E ESTEIRA
+   ========================================================================== */
+.cena {
+  position: relative;
+  z-index: 2; /* os itens "voam" por cima da faixa de retorno e das lixeiras */
+  flex: 1 1 auto;
+  min-height: 150px;
+  background-color: var(--cor-da-cena, #DCEAF0);
+  /* O cenário acompanha a altura da cena e se repete para os lados */
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  background-size: auto 100%;
+}
+
+/* Piscar vermelho no erro (a classe é posta por retorno.js) */
+.cena::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cena-erro::after {
+  animation: piscar-erro 0.45s ease-out;
+}
+
+@keyframes piscar-erro {
+  0% { box-shadow: inset 0 0 0 12px rgba(200, 38, 58, 0.85); }
+  100% { box-shadow: inset 0 0 0 0 rgba(200, 38, 58, 0); }
+}
+
+.esteira {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--lona) + var(--rolos));
+}
+
+/* A faixa da esteira. O fundo dela anda (esteira.js muda a posição). */
+.esteira-lona {
+  position: absolute;
+  left: 0;
+  right: var(--fim);
+  bottom: var(--rolos);
+  height: var(--lona);
+  background-color: #2B3745;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 52px, rgba(255, 255, 255, 0.09) 52px, rgba(255, 255, 255, 0.09) 56px);
+  border-top: var(--borda) solid var(--tinta);
+  border-bottom: var(--borda) solid var(--tinta);
+  border-right: var(--borda) solid var(--tinta);
+  border-radius: 0 999px 999px 0;
+  overflow: hidden;
+}
+
+/* Listras de segurança nas bordas da esteira */
+.esteira-lona::before,
+.esteira-lona::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(-45deg, var(--amarelo) 0, var(--amarelo) 9px, var(--tinta) 9px, var(--tinta) 18px);
+}
+
+.esteira-lona::before { top: 0; }
+.esteira-lona::after { bottom: 0; }
+
+.esteira-rolos {
+  position: absolute;
+  left: 0;
+  right: calc(var(--fim) + var(--lona) / 2);
+  bottom: 0;
+  height: var(--rolos);
+  background:
+    radial-gradient(circle at 50% 50%, #9AA9B6 0, #9AA9B6 34%, transparent 36%) 0 0 / calc(var(--rolos) * 2.2) 100% repeat-x,
+    #3A4857;
+  border-top: 2px solid var(--tinta);
+}
+
+/* O rolo do fim da esteira */
+.esteira-fim {
+  position: absolute;
+  right: calc(var(--fim) + 9px);
+  bottom: calc(var(--rolos) + 9px);
+  width: calc(var(--lona) - 18px);
+  height: calc(var(--lona) - 18px);
+  border-radius: 50%;
+  background: #8A99A7;
+  border: var(--borda) solid var(--tinta);
+}
+
+/* A pista: os itens andam do começo ao fim dela */
+.esteira-pista {
+  position: absolute;
+  left: calc(var(--boca) - 8px);
+  right: calc(var(--fim) + var(--lona) / 2);
+  bottom: var(--rolos);
+  height: var(--lona);
+}
+
+/* A "boca" de onde os itens saem (fica na frente deles) */
+.esteira-boca {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  bottom: 0;
+  width: var(--boca);
+  height: calc(var(--lona) + var(--rolos) + var(--tamanho-item) * 1.12);
+  background:
+    repeating-linear-gradient(-45deg, var(--amarelo) 0, var(--amarelo) 9px, var(--tinta) 9px, var(--tinta) 18px) 0 0 / 100% 10px no-repeat,
+    repeating-linear-gradient(90deg, #3A4857 0, #3A4857 11px, #2B3745 11px, #2B3745 14px);
+  border-top: var(--borda) solid var(--tinta);
+  border-right: var(--borda) solid var(--tinta);
+  border-radius: 0 16px 0 0;
+}
+
+/* ---- Itens ---- */
+.item {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 0;
+  width: var(--largura-item);
+  margin-left: calc(var(--largura-item) / -2);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.item-corpo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.8);
+  transform-origin: 50% calc(100% - var(--lona));
+  transition: transform 0.18s ease-out;
+}
+
+.item-seta {
+  height: clamp(22px, 4.2vh, 38px);
+  font-size: clamp(22px, 4.2vh, 38px);
+  line-height: 1;
+  color: var(--amarelo);
+  visibility: hidden;
+}
+
+.item-seta .icone {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
+.item-imagem {
+  display: block;
+  width: var(--tamanho-item);
+  height: var(--tamanho-item);
+  object-fit: contain;
+  margin-bottom: -4px; /* o item "pisa" na esteira */
+}
+
+.item-etiqueta {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: var(--lona);
+}
+
+.item-nome {
+  max-width: 100%;
+  padding: 2px 9px 3px;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(0.85rem, 1.5vw, 1.4rem);
+  line-height: 1.05;
+  text-align: center;
+  color: var(--tinta);
+  background: var(--papel);
+  border: 2.5px solid var(--tinta);
+  border-radius: 9px;
+}
+
+/* O item da vez: maior, com seta e etiqueta amarela */
+.item.da-vez {
+  z-index: 3;
+}
+
+.item.da-vez .item-corpo {
+  transform: scale(1);
+}
+
+.item.da-vez .item-seta {
+  visibility: visible;
+  animation: quicar 0.55s ease-in-out infinite alternate;
+}
+
+.item.da-vez .item-nome {
+  background: var(--amarelo);
+}
+
+@keyframes quicar {
+  0% { transform: translateY(-7px); }
+  100% { transform: translateY(1px); }
+}
+
+/* Item que caiu da esteira */
+.item.caindo .item-corpo {
+  animation: cair 0.5s ease-in forwards;
+}
+
+@keyframes cair {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(52px, 170px) rotate(60deg); opacity: 0; }
+}
+
+/* Item a caminho da lixeira (o movimento é feito em esteira.js) */
+.item.voando {
+  z-index: 30;
+}
+
+.item.voando .item-seta,
+.item.voando .item-etiqueta {
+  visibility: hidden;
+}
+
+/* ==========================================================================
+   FAIXA DE RETORNO
+   ========================================================================== */
+.retorno {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--altura-retorno);
+  padding: 6px 16px;
+  font-size: clamp(0.9rem, 1.55vw, 1.25rem);
+  line-height: 1.3;
+  background: var(--papel);
+  border-top: var(--borda) solid var(--tinta);
+  border-bottom: var(--borda) solid var(--tinta);
+  overflow: hidden;
+}
+
+.retorno:empty {
+  display: none;
+}
+
+.retorno-dica { background: #FFF4CC; }
+.retorno-certo { background: var(--certo-claro); }
+.retorno-errado { background: var(--errado-claro); }
+
+.retorno-icone {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  font-size: 1.35rem;
+  color: #FFFFFF;
+  background: var(--tinta);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 50%;
+}
+
+.retorno-icone .icone { vertical-align: 0; }
+.retorno-dica .retorno-icone { background: var(--papel); color: var(--amarelo); }
+.retorno-certo .retorno-icone { background: var(--certo); }
+.retorno-errado .retorno-icone { background: var(--errado); }
+
+.retorno-texto {
+  flex: 1;
+  min-width: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.retorno-pontos {
+  flex: none;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1;
+}
+
+.retorno-certo .retorno-pontos { color: var(--certo); }
+.retorno-errado .retorno-pontos { color: var(--errado); }
+
+.retorno.entrou .retorno-icone {
+  animation: estalo 0.28s ease-out;
+}
+
+@keyframes estalo {
+  0% { transform: scale(0.4); }
+  70% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   LIXEIRAS
+   ========================================================================== */
+.lixeiras {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 14px;
+}
+
+.lixeiras:empty {
+  display: none;
+}
+
+/* Com duas linhas, as lixeiras ficam mais baixas para tudo caber */
+.lixeiras[data-linhas="2"] {
+  --altura-lixeira: clamp(46px, 13vh, 118px);
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.lixeiras-linha {
+  display: flex;
+  justify-content: center;
+  gap: var(--vao);
+  width: 100%;
+  max-width: 1180px;
+}
+
+.lixeira {
+  position: relative;
+  flex: none;
+  /* largura = a linha dividida pela quantidade da maior linha */
+  width: calc((100% - (var(--por-linha) - 1) * var(--vao)) / var(--por-linha));
+  max-width: 184px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  font: inherit;
+  color: var(--tinta);
+  background: none;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+@media (hover: hover) {
+  .lixeira:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.lixeira:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+.lixeira-figura {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.lixeira-imagem {
+  display: block;
+  width: 100%;
+  height: var(--altura-lixeira);
+  object-fit: contain;
+}
+
+/* Sem a imagem, a lixeira vira uma caixa com a cor dela */
+.lixeira-imagem.sem-imagem {
+  aspect-ratio: auto;
+  font-size: 0;
+  background: var(--cor);
+  border-style: solid;
+}
+
+.lixeira-nome {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  margin-top: -7px;
+  padding: 2px 9px 3px;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(0.8rem, 1.45vw, 1.3rem);
+  line-height: 1.05;
+  text-align: center;
+  background: var(--papel);
+  border: 2.5px solid var(--tinta);
+  border-radius: 9px;
+  box-shadow: 0 3px 0 var(--tinta);
+}
+
+/* ---- Resultado do descarte na lixeira (classes postas por lixeiras.js) ---- */
+.lixeira-marca {
+  position: absolute;
+  top: 4%;
+  right: 8%;
+  display: grid;
+  place-items: center;
+  width: clamp(26px, 4.6vh, 38px);
+  height: clamp(26px, 4.6vh, 38px);
+  font-size: clamp(0.9rem, 2.6vh, 1.3rem);
+  color: #FFFFFF;
+  border: var(--borda) solid var(--tinta);
+  border-radius: 50%;
+  transform: scale(0);
+}
+
+.lixeira-marca .icone { vertical-align: 0; }
+.lixeira-marca-certo { background: var(--certo); }
+.lixeira-marca-errado { background: var(--errado); }
+
+.lixeira.acertou .lixeira-marca-certo { animation: marca 0.7s ease-out; }
+.lixeira.errou .lixeira-marca-errado { animation: marca 0.9s ease-out; }
+.lixeira.acertou .lixeira-imagem { animation: engolir 0.3s ease-out; }
+.lixeira.errou .lixeira-figura { animation: tremer 0.35s ease-in-out; }
+
+@keyframes marca {
+  0% { transform: scale(0); }
+  18% { transform: scale(1.2); }
+  30%, 80% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+
+@keyframes engolir {
+  0% { transform: scale(1, 1); }
+  45% { transform: scale(1.08, 0.9); }
+  100% { transform: scale(1, 1); }
+}
+
+@keyframes tremer {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+/* Depois de um erro, a lixeira certa é apontada */
+.lixeira.era-aqui .lixeira-nome {
+  background: var(--amarelo);
+}
+
+.lixeira.era-aqui::before {
+  content: 'Era aqui';
+  position: absolute;
+  z-index: 4;
+  top: -9px;
+  left: 50%;
+  padding: 1px 9px 2px;
+  font-family: var(--fonte-titulo);
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  line-height: 1.1;
+  white-space: nowrap;
+  background: var(--amarelo);
+  border: 2.5px solid var(--tinta);
+  border-radius: 8px;
+  transform: translateX(-50%);
+  animation: surgir 0.2s ease-out;
+}
+
+.lixeira.era-aqui::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 3px dashed var(--tinta);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+@keyframes surgir {
+  0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ==========================================================================
+   TELAS MENORES
+   O jogo foi pensado para navegador de PC. Estes ajustes só evitam que ele
+   quebre em janelas pequenas e em celulares.
+   ========================================================================== */
+@media (max-width: 820px) {
+  .placar-fase {
+    display: none;
+  }
+
+  .jogo-topo {
+    gap: 10px;
+    padding: 6px 16px;
+  }
+
+  .retorno {
+    padding: 4px 16px;
+    gap: 8px;
+  }
+
+  .retorno-icone {
+    width: 34px;
+    height: 34px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Celular em pé: as lixeiras quebram em linhas de 4 */
+@media (max-width: 560px) {
+  .tela-jogo {
+    --altura-retorno: 92px;
+    --altura-lixeira: 56px;
+    --tamanho-item: clamp(56px, 24vw, 104px);
+    --largura-item: 122px;
+  }
+
+  .lixeiras {
+    --por-linha: 4 !important;
+    gap: 6px;
+  }
+
+  .lixeiras[data-linhas="2"] {
+    --altura-lixeira: 48px;
+  }
+
+  .lixeiras-linha {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .placar-itens .placar-rotulo,
+  .medidor-nivel {
+    display: none;
+  }
+
+  .medidor {
+    flex-basis: 110px;
+  }
+}
+
+/* Janela baixa (celular deitado): tudo mais compacto */
+@media (max-height: 520px) {
+  .tela-jogo {
+    --altura-retorno: 46px;
+    --lona: 40px;
+    --rolos: 10px;
+    --tamanho-item: clamp(44px, 16vh, 70px);
+    --altura-lixeira: clamp(40px, 13vh, 64px);
+  }
+
+  .lixeiras[data-linhas="2"] {
+    --altura-lixeira: clamp(34px, 9.5vh, 50px);
+  }
+
+  .jogo-topo {
+    min-height: 48px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .jogo-topo .botao-redondo,
+  .botao-som {
+    width: 38px;
+    height: 38px;
+  }
+
+  .botao-som {
+    top: calc(5px + env(safe-area-inset-top, 0px));
+  }
+
+  .medidor-barra {
+    height: 18px;
+  }
+
+  .lixeiras {
+    gap: 4px;
+    padding: 6px 16px 8px;
+  }
+
+  .retorno {
+    font-size: 0.85rem;
+  }
+
+  .cena {
+    min-height: 96px;
+  }
 }

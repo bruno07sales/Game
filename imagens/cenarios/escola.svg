@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 400" width="1600" height="400">
+<rect width="1600" height="400" fill="#D9EEE6"/>
+<rect y="270" width="1600" height="130" fill="#CBE5DB"/>
+<rect y="262" width="1600" height="10" fill="#B9DACD"/>
+<!-- quadro -->
+<rect x="150" y="36" width="470" height="190" rx="10" fill="#B5D6C9"/>
+<rect x="166" y="52" width="438" height="158" fill="#C3E0D5"/>
+<path d="M200 90h160M200 122h230M200 154h120" stroke="#DCEFE8" stroke-width="9" stroke-linecap="round"/>
+<path d="M470 80l38 64h-76z" fill="none" stroke="#DCEFE8" stroke-width="8" stroke-linejoin="round"/>
+<circle cx="544" cy="168" r="24" fill="none" stroke="#DCEFE8" stroke-width="8"/>
+<rect x="330" y="210" width="110" height="14" rx="5" fill="#A7CDBD"/>
+<!-- relógio -->
+<circle cx="800" cy="112" r="46" fill="#C3E0D5"/>
+<circle cx="800" cy="112" r="34" fill="#E8F6F0"/>
+<path d="M800 90v24l-16 10" stroke="#A7CDBD" stroke-width="7" fill="none" stroke-linecap="round"/>
+<!-- armários -->
+<rect x="1010" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1028 84h44M1028 100h44M1028 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1068" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/><rect x="1098" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1116 84h44M1116 100h44M1116 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1156" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/><rect x="1186" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1204 84h44M1204 100h44M1204 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1244" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/><rect x="1274" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1292 84h44M1292 100h44M1292 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1332" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/><rect x="1362" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1380 84h44M1380 100h44M1380 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1420" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/><rect x="1450" y="56" width="80" height="344" rx="6" fill="#C8E3D9"/><path d="M1468 84h44M1468 100h44M1468 116h44" stroke="#B5D6C9" stroke-width="6" stroke-linecap="round"/><rect x="1508" y="190" width="10" height="34" rx="4" fill="#B5D6C9"/>
+</svg>

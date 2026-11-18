@@ -1,0 +1,249 @@
+/* ==========================================================================
+   RECICLANDO — css/cards.css
+   Os cards educativos do fim da fase (GDD, seção 12).
+
+   Cada card tem: aviso do erro do jogador (quando houve), desenho do item,
+   nome, condição, lugar certo, selo, explicação, nota e comparação.
+   O selo e o aviso de erro usam ícone e texto, não só cor.
+   ========================================================================== */
+
+.tela-cards {
+  display: flex;
+  padding: clamp(10px, 2vh, 18px) 16px clamp(14px, 3vh, 26px);
+}
+
+.cards-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.8vh, 14px);
+  width: 100%;
+  max-width: 780px;
+  margin: auto;
+}
+
+.cards-topo {
+  padding-right: 56px; /* espaço do botão de som */
+}
+
+.cards-topo h1 {
+  font-size: clamp(1.5rem, min(4.6vw, 5.4vh), 2.6rem);
+}
+
+.cards-resumo {
+  margin-top: 4px;
+  font-size: 1.08rem;
+}
+
+/* ---- O card ---- */
+.card {
+  padding: clamp(12px, 2.4vh, 24px) clamp(16px, 3.4vw, 26px);
+  background: var(--papel);
+  border: var(--borda) solid var(--tinta);
+  border-radius: 24px;
+  box-shadow: 0 8px 0 var(--tinta);
+}
+
+/* Aviso do erro do jogador (aparece só nos itens errados) */
+.card-erro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: clamp(8px, 1.8vh, 14px);
+  padding: 6px 12px;
+  font-weight: 700;
+  background: var(--errado-claro);
+  border: 2.5px solid var(--errado);
+  border-radius: 12px;
+}
+
+.card-erro .icone {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  color: #FFFFFF;
+  background: var(--errado);
+  border-radius: 50%;
+}
+
+.card-corpo {
+  display: grid;
+  grid-template-columns: clamp(100px, min(24vw, 23vh), 190px) 1fr;
+  align-items: center;
+  gap: clamp(14px, 3vw, 24px);
+}
+
+.card-figura {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: #EAF2F5;
+  border: var(--borda) solid var(--tinta);
+  border-radius: 18px;
+}
+
+.card-imagem {
+  display: block;
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.card-nome {
+  font-weight: 900;
+  font-size: clamp(1.5rem, min(4.4vw, 5.4vh), 2.3rem);
+}
+
+.card-lista {
+  display: grid;
+  gap: 2px;
+  margin: 6px 0 0;
+}
+
+.card-lista > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-lista dt {
+  flex: none;
+  width: 6.4em;
+  font-size: 0.95rem;
+  color: var(--tinta-clara);
+}
+
+.card-lista dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.card-destino {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.card-destino-figura {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.card-destino-figura.sem-imagem {
+  font-size: 0;
+  background: var(--cor);
+  border-style: solid;
+}
+
+/* O selo: pode ou não ir para a reciclagem */
+.card-selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 3px 12px 4px 8px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border: 2.5px solid var(--tinta);
+  border-radius: 999px;
+}
+
+.card-selo-sim { background: var(--certo-claro); }
+.card-selo-nao { background: #FFF4CC; }
+.card-selo-sim .icone { color: var(--certo); }
+
+.card-explicacao {
+  margin-top: clamp(8px, 1.8vh, 16px);
+  font-size: 1.12rem;
+}
+
+.card-nota {
+  margin-top: 8px;
+  padding-left: 12px;
+  color: var(--tinta-clara);
+  border-left: 5px solid var(--amarelo);
+}
+
+/* Comparação com o mesmo material em outro estado */
+.card-comparar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(8px, 1.6vh, 14px);
+  padding: 5px 14px;
+  background: #EEF3F6;
+  border: 2.5px dashed #7C8D9A;
+  border-radius: 14px;
+}
+
+.card-comparar-figura {
+  flex: none;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.card-comparar-figura.sem-imagem {
+  display: none;
+}
+
+.card-comparar-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.15rem;
+}
+
+/* ---- Navegação entre os cards ---- */
+.cards-rodape {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.cards-rodape [data-acao="voltar"] {
+  justify-self: start;
+}
+
+.cards-rodape [data-acao="proximo"] {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.cards-contagem {
+  grid-column: 2;
+  font-family: var(--fonte-titulo);
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+/* Janela baixa: o card fica mais compacto para o botão "Próximo" não sair da tela */
+@media (max-height: 620px) {
+  .card {
+    font-size: 16px;
+  }
+
+  .card-explicacao {
+    font-size: 1.05em;
+  }
+
+  .card-comparar-figura {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 520px) {
+  .card-corpo {
+    grid-template-columns: 1fr;
+  }
+
+  .card-figura {
+    width: 46%;
+    margin: 0 auto;
+  }
+}

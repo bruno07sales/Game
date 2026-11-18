@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 400" width="1600" height="400">
+<rect width="1600" height="400" fill="#DCE6EE"/>
+<path d="M20 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M60 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M100 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M140 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M180 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M220 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M260 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M300 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M340 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M380 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M420 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M460 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M500 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M540 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M580 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M620 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M660 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M700 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M740 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M780 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M820 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M860 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M900 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M940 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M980 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1020 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1060 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1100 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1140 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1180 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1220 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1260 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1300 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1340 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1380 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1420 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1460 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1500 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1540 0V400" stroke="#D2DDE7" stroke-width="10"/><path d="M1580 0V400" stroke="#D2DDE7" stroke-width="10"/>
+<rect y="26" width="1600" height="14" fill="#C9D6E1"/>
+<!-- luminárias -->
+<path d="M500 40v40M1100 40v40" stroke="#C0CEDA" stroke-width="8"/>
+<path d="M452 80h96l22 40H430z" fill="#C0CEDA"/>
+<path d="M1052 80h96l22 40h-140z" fill="#C0CEDA"/>
+<!-- fardos de material prensado -->
+<rect x="70" y="236" width="190" height="164" rx="8" fill="#C6D4DF"/><path d="M127.0 236v164M203.0 236v164" stroke="#B4C3D0" stroke-width="6"/>
+<rect x="270" y="270" width="170" height="130" rx="8" fill="#CDD9E3"/><path d="M321.0 270v130M389.0 270v130" stroke="#B4C3D0" stroke-width="6"/>
+<rect x="110" y="112" width="170" height="124" rx="8" fill="#CDD9E3"/><path d="M161.0 112v124M229.0 112v124" stroke="#B4C3D0" stroke-width="6"/>
+<rect x="1170" y="256" width="180" height="144" rx="8" fill="#CDD9E3"/><path d="M1224.0 256v144M1296.0 256v144" stroke="#B4C3D0" stroke-width="6"/>
+<rect x="1360" y="216" width="190" height="184" rx="8" fill="#C6D4DF"/><path d="M1417.0 216v184M1493.0 216v184" stroke="#B4C3D0" stroke-width="6"/>
+<rect x="1250" y="132" width="170" height="124" rx="8" fill="#D3DEE7"/><path d="M1301.0 132v124M1369.0 132v124" stroke="#B4C3D0" stroke-width="6"/>
+<!-- placa pendurada -->
+<path d="M746 100V40M854 100V40" stroke="#C0CEDA" stroke-width="8"/>
+<rect x="700" y="96" width="200" height="124" rx="14" fill="#C9D6E1"/>
+<path d="M800 124l32 54h-64z" fill="none" stroke="#E6EEF4" stroke-width="12" stroke-linejoin="round"/>
+</svg>

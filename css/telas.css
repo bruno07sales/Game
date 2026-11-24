@@ -121,6 +121,7 @@
 .tela-como-jogar,
 .tela-creditos,
 .tela-fases,
+.tela-indisponivel,
 .tela-problemas {
   background: var(--ceu);
 }
@@ -515,6 +516,12 @@
 }
 
 /* ---- Resultado ---- */
+.tutorial-pagina { display: grid; gap: 18px; }
+.tutorial-pagina .lixeira-imagem { height: clamp(60px, 12vh, 100px); }
+.tutorial-retorno { min-height: 3em; }
+.tutorial-pagina button:disabled { cursor: default; opacity: 0.65; }
+.numeros-erros { grid-template-columns: repeat(2, 1fr); }
+
 /* A faixa colorida no alto do painel: verde na vitória, vermelha na derrota */
 .resultado-vitoria,
 .resultado-derrota,

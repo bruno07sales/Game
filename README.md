@@ -103,7 +103,7 @@ Reciclando/
 │   ├── lixeiras/
 │   └── icone.svg
 │
-└── fontes/                    # Fontes e licenças
+└── testes/                    # Testes automatizados em Node.js
 ```
 
 O arquivo `index.html` é o ponto de entrada do jogo e carrega os módulos na ordem necessária.
@@ -129,9 +129,22 @@ O arquivo `index.html` é o ponto de entrada do jogo e carrega os módulos na or
 
 - `css/`: estilos gerais, jogo, demais telas e cards.
 - `imagens/`: desenhos dos resíduos, lixeiras, cenários e ícone.
-- `fontes/`: fontes utilizadas e respectivas licenças.
+- `fontes/`: Londrina Solid e Lexend, incluídas com suas licenças para uso offline.
 - `CREDITOS-DOS-ASSETS.md`: Créditos dos recursos utilizados.
 
+A interface acompanha a referência https://reciclando.vercel.app/, com fontes locais, ícones SVG, painéis de abertura, seleção de fases e estilos responsivos em `css/responsivo.css`. Esta versão mantém as três fases Alpha e inclui créditos acessíveis pelo menu.
+
+
+## Testes automatizados
+
+Com Node.js instalado, execute na raiz do projeto:
+
+```sh
+node testes/regras.cjs
+node testes/interface.cjs
+```
+
+Os testes verificam o motor da esteira e a integração dos scripts com um DOM mínimo, incluindo recursos locais, as três fases, pontuação, derrota, pausa, cards e desbloqueio. A aparência deve ser conferida no navegador.
 
 ## Testes e demonstração do Marco 3
 
@@ -153,7 +166,7 @@ Após a apresentação Alpha de 25/11, o cronograma prevê a integração dos re
 
 - Quarta fase: Centro de Resíduos Especiais, com 30 itens e 12 lixeiras.
 - Efeitos sonoros e controle de som.
-- Créditos acessíveis pelo jogo e tela final da jornada.
+- Tela final da jornada.
 - Testes e validação da versão completa.
 
 A entrega final está prevista para **02/12/2026**, com as quatro fases integradas.

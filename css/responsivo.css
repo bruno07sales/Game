@@ -1,0 +1,141 @@
+/* Adaptação para toque, barras do navegador e mudanças de orientação. */
+body { height: 100vh; height: 100dvh; }
+.botao-som { right: calc(10px + env(safe-area-inset-right, 0px)); }
+.tela { overscroll-behavior: contain; }
+.painel-fundo {
+  overflow-y: auto;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.painel { margin: auto; }
+.numeros-erros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+@media (pointer: coarse), (max-width: 1024px) {
+  .botao, .botao-pequeno { min-height: 48px; }
+  .botao-redondo, .jogo-topo .botao-redondo, .botao-som { width: 48px; height: 48px; }
+  .lixeira { min-height: 48px; min-width: 48px; }
+  .tela { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+  .tela-jogo { padding: 0; overflow-y: auto; }
+  .jogo-topo {
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-left: max(10px, env(safe-area-inset-left));
+  }
+  .com-botao-de-som .jogo-topo { padding-right: calc(70px + env(safe-area-inset-right)); }
+  .tela-jogo > .lixeiras { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+  .retorno { height: auto; min-height: var(--altura-retorno); overflow: visible; }
+  .retorno-texto { max-height: none; overflow: visible; overflow-wrap: anywhere; }
+  .pagina, .cards-pagina, .resultado-painel, .final-painel { min-width: 0; }
+}
+
+/* Celular em pé: todos os destinos visíveis em uma grade de três colunas. */
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .tela-jogo {
+    --lona: 42px;
+    --rolos: 12px;
+    --boca: 26px;
+    --fim: 20px;
+    --tamanho-item: 76px;
+    --largura-item: 112px;
+    --altura-retorno: 76px;
+  }
+  .jogo-topo { align-items: center; gap: 8px; }
+  .placar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 10px;
+  }
+  .placar-fase { display: none; }
+  .placar-pontos { grid-column: 1; grid-row: 1; }
+  .placar-itens { grid-column: 2; grid-row: 1; }
+  .medidor { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+  .medidor-topo { display: none; }
+  .medidor-barra { height: 18px; }
+  .medidor .placar-valor { font-size: 1.1rem; }
+  .placar-pontos .placar-valor, .placar-itens .placar-valor { font-size: 1.35rem; }
+  .placar-rotulo { font-size: 0.75rem; }
+  .placar-itens .placar-rotulo { display: block; }
+  .cena { min-height: 160px; }
+  .item-seta { height: 24px; font-size: 24px; }
+  .item-nome { font-size: 0.95rem; padding-inline: 4px; }
+  .tela-jogo > .lixeiras, .tutorial-pagina .lixeiras {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 10px 10px max(14px, env(safe-area-inset-bottom));
+  }
+  .lixeiras-linha { display: contents; }
+  .lixeira {
+    width: 100%; max-width: none;
+    display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 2px;
+    align-items: center;
+  }
+  .lixeira-imagem, .lixeiras[data-linhas="2"] .lixeira-imagem { height: 34px; }
+  .lixeira-nome {
+    margin-top: 0;
+    font-size: 0.85rem;
+    line-height: 1.1;
+    padding: 3px 2px;
+    overflow-wrap: anywhere;
+  }
+  .retorno {
+    height: 96px; min-height: 96px; overflow-y: auto;
+    padding: 8px 10px; gap: 7px; font-size: 0.9rem; align-items: flex-start;
+  }
+  .retorno-icone { width: 28px; height: 28px; font-size: 1rem; }
+  .retorno-pontos { font-size: 1.2rem; }
+  .pagina { padding: 18px 12px 28px; }
+  .tutorial-pagina > h1 { padding-right: 56px; }
+  .inicial-botoes { flex-direction: column; max-width: 320px; margin-inline: auto; }
+  .inicial-centro { padding-top: 40px; }
+  .abertura-botoes, .resultado-botoes { flex-direction: column; align-items: stretch; }
+  .botao { max-width: 100%; overflow-wrap: anywhere; }
+  .abertura-painel, .resultado-painel, .final-painel, .cards-pagina { flex: none; }
+  .abertura-topo { padding-right: 62px; padding-left: 16px; }
+  .resultado-painel > h1, .final-painel > h1 { padding-right: 38px; }
+  .card-lista > div { align-items: flex-start; flex-direction: column; gap: 2px; }
+  .card-lista dt { width: auto; }
+  .card-destino, .card-selo { max-width: 100%; }
+  .card-selo { border-radius: 16px; }
+  .card-destino-figura { flex: none; }
+  .card-comparar { padding: 8px; }
+  .cards-rodape { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cards-contagem { grid-column: 1 / -1; grid-row: 1; text-align: center; }
+  .cards-rodape [data-acao="voltar"] { grid-column: 1; grid-row: 2; }
+  .cards-rodape [data-acao="proximo"] { grid-column: 2; grid-row: 2; }
+  .tabela { min-width: 540px; }
+  .tabela-rolagem { max-width: 100%; }
+  .numeros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .erros-lista li > span { min-width: 0; overflow-wrap: anywhere; }
+}
+
+/* Celular deitado: esteira à esquerda, destinos à direita. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+  .tela-jogo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(150px, 1fr) auto;
+    --tamanho-item: 64px;
+    --largura-item: 112px;
+    --boca: 26px;
+    --fim: 20px;
+    --altura-retorno: 64px;
+  }
+  .jogo-topo { grid-column: 1 / -1; }
+  .cena { grid-column: 1; grid-row: 2; min-height: 150px; }
+  .retorno {
+    grid-column: 1; grid-row: 3; font-size: 0.85rem;
+    height: 96px; min-height: 96px; overflow-y: auto; align-items: flex-start;
+  }
+  .tela-jogo > .lixeiras {
+    grid-column: 2; grid-row: 2 / 4;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: center; gap: 8px; padding: 10px max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) 10px;
+  }
+  .tela-jogo .lixeiras-linha { display: contents; }
+  .tela-jogo .lixeira { width: 100%; max-width: none; }
+  .tela-jogo .lixeira-imagem { height: 34px; }
+  .tela-jogo .lixeira-nome { font-size: 0.85rem; margin: 0; padding: 2px 4px; }
+  .placar-fase { display: none; }
+  .medidor-nivel { display: none; }
+}
